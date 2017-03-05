@@ -29,7 +29,7 @@ public class Forces {
 			String answer = scan.nextLine();
 			scan.close();
 			if (answer.contains("y") || answer.contains("o")) {
-				
+				???
 			} else {
 				System.out.println("Vous avez choisi de ne pas bouger");
 			}

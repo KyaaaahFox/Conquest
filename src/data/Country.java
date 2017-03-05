@@ -1,11 +1,15 @@
 package data;
 
+import java.util.Arrays;
+
 public class Country {
 	private int gold;
 	private int wood;
 	private String name;
 	private Casern[] caserns;
-	private Productions producer;
+	private int produce;
+	private int mine;
+	private int forest;
 	private Soldier[] offense;
 	private Soldier[] defense;
 	
@@ -15,7 +19,16 @@ public class Country {
 		this.wood = wood;
 		this.name = name;
 	}
+		
 	
+	@Override
+	public String toString() {
+		return "Country [gold=" + gold + ", wood=" + wood + ", name=" + name + ", caserns=" + Arrays.toString(caserns)
+				+ ", produce=" + produce + ", mine=" + mine + ", forest=" + forest + ", offense="
+				+ Arrays.toString(offense) + ", defense=" + Arrays.toString(defense) + "]";
+	}
+
+
 	public int getGold() {
 		return gold;
 	}
@@ -48,12 +61,28 @@ public class Country {
 		this.caserns = caserns;
 	}
 	
-	public Productions getProducer() {
-		return producer;
+	public int getProduce() {
+		return produce;
 	}
 	
-	public void setProducer(Productions producer) {
-		this.producer = producer;
+	public void setProduce(int produce) {
+		this.produce = produce;
+	}
+	
+	public int getMine() {
+		return mine;
+	}
+	
+	public void setMine(int mine) {
+		this.mine = mine;
+	}
+	
+	public int getForest() {
+		return forest;
+	}
+	
+	public void setForest(int forest) {
+		this.forest = forest;
 	}
 	
 	public Soldier[] getOffense() {

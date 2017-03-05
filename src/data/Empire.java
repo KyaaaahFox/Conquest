@@ -1,6 +1,7 @@
 package data;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 public class Empire {
 	private String name;
@@ -14,6 +15,12 @@ public class Empire {
 		this.countries = countries;
 	}
 	
+	@Override
+	public String toString() {
+		return "Empire [name=" + name + ", allies=" + Arrays.toString(allies) + ", countries="
+				+ Arrays.toString(countries) + ", color=" + color + "]";
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -44,5 +51,22 @@ public class Empire {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	public void colorChoice(String colorName) {
+		switch (colorName) {
+		case "Red":
+			setColor(Color.RED);
+		break;
+		case "Green":
+			setColor(Color.GREEN);
+		break;
+		case "Blue":
+			setColor(Color.BLUE);
+		break;
+		default:
+			setColor(null);
+		break;
+		}
 	}
 }
