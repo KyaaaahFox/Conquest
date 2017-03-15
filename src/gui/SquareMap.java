@@ -99,20 +99,20 @@ public class SquareMap extends JPanel{
 			Square selectedCaseJLabel = (Square) e.getSource();
 			
 			
-//			if (selectedCaseJLabel.getBackground().equals(Color.WHITE)) {
-//				selectedCaseJLabel.setBackground(Color.RED);
-//				selectedCaseJLabel.setText("Casern");
-//			}else if (selectedCaseJLabel.getBackground().equals(Color.RED)) {
-//				selectedCaseJLabel.setBackground(Color.GREEN);
-//				selectedCaseJLabel.setText("Wood");
-//			}else if (selectedCaseJLabel.getBackground().equals(Color.GREEN)) {
-//				selectedCaseJLabel.setBackground(Color.BLUE);
-//				selectedCaseJLabel.setText("Gold");
-//			}else if (selectedCaseJLabel.getBackground().equals(Color.BLUE)) {
-//				selectedCaseJLabel.setBackground(Color.WHITE);
-//				int num = 1 + selectedCaseJLabel.getPositionX() + selectedCaseJLabel.getPositionY();
-//				selectedCaseJLabel.setText(Integer.toString(num));
-//			}
+			if (selectedCaseJLabel.getBackground().equals(Color.WHITE)) {
+				selectedCaseJLabel.setBackground(Color.RED);
+				selectedCaseJLabel.setText("Casern");
+			}else if (selectedCaseJLabel.getBackground().equals(Color.RED)) {
+				selectedCaseJLabel.setBackground(Color.GREEN);
+				selectedCaseJLabel.setText("Wood");
+			}else if (selectedCaseJLabel.getBackground().equals(Color.GREEN)) {
+				selectedCaseJLabel.setBackground(Color.BLUE);
+				selectedCaseJLabel.setText("Gold");
+			}else if (selectedCaseJLabel.getBackground().equals(Color.BLUE)) {
+				selectedCaseJLabel.setBackground(Color.WHITE);
+				int num = 1 + selectedCaseJLabel.getPositionX() + selectedCaseJLabel.getPositionY();
+				selectedCaseJLabel.setText(Integer.toString(num));
+			}
 		}
 
 		@Override
