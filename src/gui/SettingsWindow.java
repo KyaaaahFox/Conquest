@@ -197,45 +197,47 @@ public class SettingsWindow extends JFrame {
 		countryTwoPanel.add(countryTwoColorLabel);
 		countryTwoPanel.add(countryTwoColorChoice);
 
-		if (numberCountries == 2) {
+		if (numberCountries >= 2) {
 			lineTwo.setLayout(new BoxLayout(lineTwo, BoxLayout.Y_AXIS));
 			lineTwo.add(countryOnePanel);
 			lineTwo.add(countryTwoPanel);
-			
-			countriesPanel.setLayout(new BorderLayout());
-			countriesPanel.add(lineTwo, BorderLayout.CENTER);
-		}else if (numberCountries == 3) {
-			countryThreePanel.setLayout(new BoxLayout(countryThreePanel, BoxLayout.LINE_AXIS));
-			countryThreePanel.add(countryThreeNameLabel);
-			countryThreePanel.add(countryThreeChoice);
-			countryThreePanel.add(countryThreeColorLabel);
-			countryThreePanel.add(countryThreeColorChoice);
-			
-			lineTwo.setLayout(new BoxLayout(lineTwo, BoxLayout.Y_AXIS));
-			lineTwo.add(countryOnePanel);
-			lineTwo.add(countryTwoPanel);
-			lineTwo.add(countryThreePanel);
 			
 			countriesPanel.setLayout(new BorderLayout());
 			countriesPanel.add(lineTwo, BorderLayout.NORTH);
-			countriesPanel.add(lineThree, BorderLayout.CENTER);
-		}else if (numberCountries == 4) {
-			countryFourPanel.setLayout(new BoxLayout(countryFourPanel, BoxLayout.LINE_AXIS));
-			countryFourPanel.add(countryFourNameLabel);
-			countryFourPanel.add(countryFourChoice);
-			countryFourPanel.add(countryFourColorLabel);
-			countryFourPanel.add(countryFourColorChoice);
-			
-			lineTwo.setLayout(new BoxLayout(lineTwo, BoxLayout.Y_AXIS));
-			lineTwo.add(countryOnePanel);
-			lineTwo.add(countryTwoPanel);
-			lineTwo.add(countryThreePanel);
-			lineTwo.add(countryFourPanel);
-			
-			countriesPanel.setLayout(new BorderLayout());
-			countriesPanel.add(lineTwo, BorderLayout.NORTH);
-			countriesPanel.add(lineThree, BorderLayout.CENTER);
-			countriesPanel.add(lineFour, BorderLayout.SOUTH);
+			if (numberCountries >= 3) {
+				countryThreePanel.setLayout(new BoxLayout(countryThreePanel, BoxLayout.LINE_AXIS));
+				countryThreePanel.add(countryThreeNameLabel);
+				countryThreePanel.add(countryThreeChoice);
+				countryThreePanel.add(countryThreeColorLabel);
+				countryThreePanel.add(countryThreeColorChoice);
+				
+				lineTwo.setLayout(new BoxLayout(lineTwo, BoxLayout.Y_AXIS));
+				lineTwo.add(countryOnePanel);
+				lineTwo.add(countryTwoPanel);
+				lineTwo.add(countryThreePanel);
+				
+				countriesPanel.setLayout(new BorderLayout());
+				countriesPanel.add(lineTwo, BorderLayout.NORTH);
+				countriesPanel.add(lineThree, BorderLayout.CENTER);
+				if (numberCountries == 4) {
+					countryFourPanel.setLayout(new BoxLayout(countryFourPanel, BoxLayout.LINE_AXIS));
+					countryFourPanel.add(countryFourNameLabel);
+					countryFourPanel.add(countryFourChoice);
+					countryFourPanel.add(countryFourColorLabel);
+					countryFourPanel.add(countryFourColorChoice);
+					
+					lineTwo.setLayout(new BoxLayout(lineTwo, BoxLayout.Y_AXIS));
+					lineTwo.add(countryOnePanel);
+					lineTwo.add(countryTwoPanel);
+					lineTwo.add(countryThreePanel);
+					lineTwo.add(countryFourPanel);
+					
+					countriesPanel.setLayout(new BorderLayout());
+					countriesPanel.add(lineTwo, BorderLayout.NORTH);
+					countriesPanel.add(lineThree, BorderLayout.CENTER);
+					countriesPanel.add(lineFour, BorderLayout.SOUTH);
+				}
+			}
 		}
 		
 		lastLine.setLayout(new BorderLayout());
@@ -348,26 +350,56 @@ public class SettingsWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			Object currentCountryOne = countryOneChoice.getSelectedItem();
 			Object currentCountryTwo = countryTwoChoice.getSelectedItem();
+			Object currentCountryThree = countryThreeChoice.getSelectedItem();
+			Object currentCountryFour = countryFourChoice.getSelectedItem();
 			Object currentColorOne = countryOneColorChoice.getSelectedItem();
 			Object currentColorTwo = countryTwoColorChoice.getSelectedItem();
+			Object currentColorThree = countryThreeColorChoice.getSelectedItem();
+			Object currentColorFour = countryFourColorChoice.getSelectedItem();
 			int indexCountryOne = countryOneChoice.getSelectedIndex();
 			int indexCountryTwo = countryTwoChoice.getSelectedIndex();
+			int indexCountryThree = countryThreeChoice.getSelectedIndex();
+			int indexCountryFour = countryFourChoice.getSelectedIndex();
 			int indexColorOne = countryOneColorChoice.getSelectedIndex();
 			int indexColorTwo = countryTwoColorChoice.getSelectedIndex();
+			int indexColorThree = countryThreeColorChoice.getSelectedIndex();
+			int indexColorFour = countryFourColorChoice.getSelectedIndex();
+			//a finir
+			System.out.println(numberCountries);
 			
-			if ((currentCountryOne).equals(currentCountryTwo)) {
+			if ((currentCountryTwo).equals(currentCountryOne) || ((currentCountryTwo).equals(currentCountryThree)) || ((currentCountryTwo).equals(currentCountryFour))) {
 				if (indexCountryTwo < countryTwoChoice.getItemCount() - 1) {
 					countryTwoChoice.setSelectedItem(countryTwoChoice.getItemAt(indexCountryTwo + 1));
 				} else {
 					countryTwoChoice.setSelectedItem(countryTwoChoice.getItemAt(0));
 				}
-			} else if ((currentColorOne).equals(currentColorTwo)) {
+			}
+			
+			if ((currentCountryThree).equals(currentCountryOne) || ((currentCountryThree).equals(currentCountryFour))) {
+				if (indexCountryThree < countryThreeChoice.getItemCount() - 1) {
+					countryThreeChoice.setSelectedItem(countryThreeChoice.getItemAt(indexCountryThree + 1));
+				} else {
+					countryThreeChoice.setSelectedItem(countryThreeChoice.getItemAt(0));
+				}
+			}
+			
+			if ((currentCountryFour).equals(currentCountryOne)) {
+				if (indexCountryFour < countryFourChoice.getItemCount() - 1) {
+					countryFourChoice.setSelectedItem(countryFourChoice.getItemAt(indexCountryFour + 1));
+				} else {
+					countryFourChoice.setSelectedItem(countryFourChoice.getItemAt(0));
+				}
+			}
+			
+			if ((currentColorOne).equals(currentColorTwo)) {
 				if (indexColorTwo < countryTwoColorChoice.getItemCount() - 1) {
 					countryTwoColorChoice.setSelectedItem(countryTwoColorChoice.getItemAt(indexColorTwo + 1));
 				} else {
 					countryTwoColorChoice.setSelectedItem(countryTwoColorChoice.getItemAt(0));
 				}
 			}
+			
+			
 		}
 	}
 
