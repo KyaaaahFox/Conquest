@@ -6,19 +6,19 @@ import java.util.Arrays;
 public class Empire {
 	private String name;
 	private Empire[] allies;
-	private Country[] countries;
+	private int countries;
 	private Color color;
 	
-	public Empire(String name, Country[] countries) {
+	public Empire(String name) {
 		super();
 		this.name = name;
-		this.countries = countries;
+		countries = 2;
 	}
 	
 	@Override
 	public String toString() {
-		return "Empire [name=" + name + ", allies=" + Arrays.toString(allies) + ", countries="
-				+ Arrays.toString(countries) + ", color=" + color + "]";
+		return "Empire [name=" + name + ", allies=" + Arrays.toString(allies) + ", nbcountries="
+				+ countries + ", color=" + color + "]";
 	}
 
 	public String getName() {
@@ -37,11 +37,11 @@ public class Empire {
 		this.allies = allies;
 	}
 	
-	public Country[] getCountries() {
+	public int getCountries() {
 		return countries;
 	}
 	
-	public void setCountries(Country[] countries) {
+	public void setCountries(int countries) {
 		this.countries = countries;
 	}
 

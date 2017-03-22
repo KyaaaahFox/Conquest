@@ -12,12 +12,14 @@ public class Country {
 	private int forest;
 	private Soldier[] offense;
 	private Soldier[] defense;
+	private Empire empire;
 	
-	public Country(int gold, int wood, String name) {
+	public Country(int gold, int wood, String name, Empire empire) {
 		super();
 		this.gold = gold;
 		this.wood = wood;
 		this.name = name;
+		this.empire = empire;
 	}
 		
 	
@@ -99,5 +101,15 @@ public class Country {
 	
 	public void setDefense(Soldier[] defense) {
 		this.defense = defense;
+	}
+
+
+	public Empire getEmpire() {
+		return empire;
+	}
+
+
+	public void setEmpire(Empire empire) {
+		this.empire = empire;
 	}
 }
