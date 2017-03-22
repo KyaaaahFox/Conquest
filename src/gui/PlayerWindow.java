@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -15,11 +16,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+
 import com.opencsv.CSVReader;
 
 @SuppressWarnings("serial")
 public class PlayerWindow extends JFrame{
 	private int numberCountries;
+	private int ligne;
+	private int colonne;
+	private int nombreDeJoueurs;
 	
 	protected JPanel mainPanel = new JPanel();
 	protected JPanel countryOnePanel = new JPanel();
@@ -52,8 +58,11 @@ public class PlayerWindow extends JFrame{
 
 	protected JButton lockButton = new JButton("Valider");
 	
-	public PlayerWindow(int numberCountries) {
+	public PlayerWindow(int numberCountries, int ligne, int colonne, int nombreDeJoueurs) {
 		this.numberCountries = numberCountries;
+		this.ligne = ligne;
+		this.colonne = colonne;
+		this.nombreDeJoueurs = nombreDeJoueurs;
 		initLists();
 		createLayout(numberCountries);
 	}
@@ -238,7 +247,18 @@ public class PlayerWindow extends JFrame{
 	
 	class LockAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-		
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					int cellWidth = 40;
+					try {
+						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					new MapWindow(cellWidth, ligne, colonne, nombreDeJoueurs);
+					dispose();
+				}
+			});
 		}
 	}
 

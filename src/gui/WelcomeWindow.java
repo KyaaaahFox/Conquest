@@ -95,14 +95,16 @@ public class WelcomeWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					int cellWidth = 40;
 					int numberCountries = (int) numberEmpireChoice.getSelectedItem();
+					int ligne = (int) rowChoice.getSelectedItem();
+					int colonne = (int) colChoice.getSelectedItem();
+					int nombreDeJoueurs = (int) numberEmpireChoice.getSelectedItem();
 					try {
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					new PlayerWindow(numberCountries);
+					new PlayerWindow(numberCountries, ligne, colonne, nombreDeJoueurs);
 					dispose();
 				}
 			});
