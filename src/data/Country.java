@@ -1,7 +1,6 @@
 package data;
 
 import java.util.Arrays;
-import java.util.Random;
 
 public class Country {
 	private int gold;

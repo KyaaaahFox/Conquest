@@ -1,8 +1,6 @@
 package core;
 
 import data.Country;
-import data.Empire;
-import data.Soldier;
 
 public class War {
   	private Country atkCountry;
@@ -45,4 +43,4 @@ public class War {
 			return "Draw game, both armies destroyed";
   		}
   	}
-  }
+ }
