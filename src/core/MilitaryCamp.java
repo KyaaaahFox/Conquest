@@ -24,15 +24,9 @@ public class MilitaryCamp {
 		String answer = scan.nextLine();
 		scan.close();
 		if (answer.equals("atk")) {
-			int lengthAtkTab = country.getOffense().length;
-			Soldier atk[] = country.getOffense();
-			atk[lengthAtkTab + 1] = soldier;
-			country.setOffense(atk);
+			country.addAtkSoldier(soldier);
 		}else if (answer.equals("def")) {
-			int lengthDefTab = country.getDefense().length;
-			Soldier def[] = country.getDefense();
-			def[lengthDefTab + 1] = soldier;
-			country.setDefense(def);
+			country.addDefSoldier(soldier);
 		}
 	}
 }

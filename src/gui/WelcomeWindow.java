@@ -75,15 +75,15 @@ public class WelcomeWindow extends JFrame {
 
 		rowChoice.setMaximumSize(new Dimension(300, 200));
 		rowChoice.addItem(16);
-		rowChoice.addItem(32);
-		rowChoice.addItem(64);
-		rowChoice.addItem(128);
+		rowChoice.addItem(20);
+		rowChoice.addItem(24);
+		rowChoice.addItem(28);
 
 		colChoice.setMaximumSize(new Dimension(300, 200));
 		colChoice.addItem(16);
-		colChoice.addItem(32);
-		colChoice.addItem(64);
-		colChoice.addItem(128);
+		colChoice.addItem(20);
+		colChoice.addItem(24);
+		colChoice.addItem(28);
 
 		numberEmpireChoice.setMaximumSize(new Dimension(300, 200));
 		for (int i = 2; i <= 4; i++) {
@@ -95,7 +95,6 @@ public class WelcomeWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					int numberCountries = (int) numberEmpireChoice.getSelectedItem();
 					int ligne = (int) rowChoice.getSelectedItem();
 					int colonne = (int) colChoice.getSelectedItem();
 					int nombreDeJoueurs = (int) numberEmpireChoice.getSelectedItem();
@@ -104,7 +103,7 @@ public class WelcomeWindow extends JFrame {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					new PlayerWindow(numberCountries, ligne, colonne, nombreDeJoueurs);
+					new PlayerWindow(ligne, colonne, nombreDeJoueurs);
 					dispose();
 				}
 			});

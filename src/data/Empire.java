@@ -64,6 +64,9 @@ public class Empire {
 		case "Blue":
 			setColor(Color.BLUE);
 		break;
+		case "Yellow":
+			setColor(Color.YELLOW);
+		break;
 		default:
 			setColor(null);
 		break;

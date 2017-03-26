@@ -80,60 +80,6 @@ public class SettingsWindow extends JFrame {
 		this.setVisible(true);
 	}
 
-	public Empire empireReader(String empireName, int numbEmpire) {
-		Country[] countries = new Country[2];
-		try {
-			CSVReader empireFile = new CSVReader(new FileReader("empires.csv"));
-			String[] nextLine;
-			while ((nextLine = empireFile.readNext()) != null) {
-				if (nextLine[0].equals(empireName)) {
-					countries[0] = countryReader(nextLine[1]);
-					countries[1] = countryReader(nextLine[2]);
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Empire empire = new Empire(empireName);
-		if (numbEmpire==1) {
-			empire.colorChoice((String)countryOneColorChoice.getSelectedItem());
-		}else if (numbEmpire==2) {
-			empire.colorChoice((String)countryTwoColorChoice.getSelectedItem());
-		}
-		System.out.println(empire.toString());
-		for (int j = 0; j < countries.length; j++) {
-			System.out.println(empireName + " : " + countries[j]);
-		}
-		return empire;
-	}
-
-	public Country countryReader(String countryName) {
-		Country country = null;
-		try {
-			CSVReader countryFile = new CSVReader(new FileReader("countries.csv"));
-			String[] nextLine;
-			while ((nextLine = countryFile.readNext()) != null) {
-				if (nextLine[0].equals(countryName)) {
-					int gold = Integer.parseInt(nextLine[1]);
-					int wood = Integer.parseInt(nextLine[2]);
-					String name = nextLine[0];
-					int producer = Integer.parseInt(nextLine[4]);
-					Empire empire = new Empire("bonjour");
-					Country countryTMP = new Country(gold, wood, name, empire);
-					countryTMP.setProduce(producer);
-					country = countryTMP;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return country;
-	}
-
 	class PreviewAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			numberCountries = (int) numberEmpireChoice.getSelectedItem();

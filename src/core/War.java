@@ -26,14 +26,12 @@ public class War {
   	}
   	
 	//Set Counties and armies
-	public void battle(Country defending, Empire armyBelongs, Empire beingAttacked) {
-		if (atkPower<defPower) {
-			int nbCountryWinner = beingAttacked.getCountries().length;
-	 		armyBelongs.getCountries()[nbCountryWinner+1] = defending;
-	 		for (int i = 0; i < armyBelongs.getCountries().length; i++) {
-				if (armyBelongs.getCountries()[i].equals()) {
-					
-				}
+	public void battle() {
+		if (atkPower < defPower) {
+			defCountry.getEmpire().setCountries(defCountry.getEmpire().getCountries()+1);
+	 		for (int i = 0; i < atkCountry.getOffense().length; i++) {
+				atkCountry.suppAtkArmy();
+				defCountry.
 			}
 			beingAttacked[nomberOfCountriesBeingAttacked] = NULL; 
 			nomberOfCountriesBeingAttacked=nomberOfCountriesBeingAttacked-1;

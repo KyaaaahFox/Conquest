@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -20,13 +21,15 @@ import javax.swing.UIManager;
 
 import com.opencsv.CSVReader;
 
+import data.Country;
+import data.Empire;
+
 @SuppressWarnings("serial")
-public class PlayerWindow extends JFrame{
-	private int numberCountries;
+public class PlayerWindow extends JFrame {
 	private int ligne;
 	private int colonne;
 	private int nombreDeJoueurs;
-	
+
 	protected JPanel mainPanel = new JPanel();
 	protected JPanel countryOnePanel = new JPanel();
 	protected JPanel countryTwoPanel = new JPanel();
@@ -37,7 +40,7 @@ public class PlayerWindow extends JFrame{
 	protected JPanel lineThree = new JPanel();
 	protected JPanel lineFour = new JPanel();
 	protected JPanel countriesPanel = new JPanel();
-	
+
 	protected JLabel countryOneNameLabel = new JLabel("Player 1 Empire: ");
 	protected JLabel countryOneColorLabel = new JLabel("Color of your Empire: ");
 	protected JLabel countryTwoNameLabel = new JLabel("Player 2 Empire: ");
@@ -46,7 +49,7 @@ public class PlayerWindow extends JFrame{
 	protected JLabel countryThreeColorLabel = new JLabel("Color of your Empire: ");
 	protected JLabel countryFourNameLabel = new JLabel("Player 4 Empire: ");
 	protected JLabel countryFourColorLabel = new JLabel("Color of your Empire: ");
-	
+
 	protected JComboBox<String> countryOneChoice = new JComboBox<String>();
 	protected JComboBox<String> countryOneColorChoice = new JComboBox<String>();
 	protected JComboBox<String> countryTwoChoice = new JComboBox<String>();
@@ -58,13 +61,14 @@ public class PlayerWindow extends JFrame{
 
 	protected JButton lockButton = new JButton("Valider");
 	
-	public PlayerWindow(int numberCountries, int ligne, int colonne, int nombreDeJoueurs) {
-		this.numberCountries = numberCountries;
+	public HashMap<Integer, Country> countriesMap = new HashMap<>();
+	
+	public PlayerWindow(int ligne, int colonne, int nombreDeJoueurs) {
 		this.ligne = ligne;
 		this.colonne = colonne;
 		this.nombreDeJoueurs = nombreDeJoueurs;
 		initLists();
-		createLayout(numberCountries);
+		createLayout(nombreDeJoueurs);
 	}
 
 	protected void initLists() {
@@ -89,12 +93,7 @@ public class PlayerWindow extends JFrame{
 			countryThreeChoice.addItem(empireArray[i]);
 			countryFourChoice.addItem(empireArray[i]);
 		}
-		
-		countryOneChoice.addActionListener(new Selector());
-		countryOneColorChoice.addActionListener(new Selector());
-		countryTwoChoice.addActionListener(new Selector());
-		countryTwoColorChoice.addActionListener(new Selector());
-		
+
 		countryOneColorChoice.setMaximumSize(new Dimension(300, 200));
 		countryTwoColorChoice.setMaximumSize(new Dimension(300, 200));
 		ArrayList<String> colorList = new ArrayList<String>();
@@ -116,10 +115,10 @@ public class PlayerWindow extends JFrame{
 			countryThreeColorChoice.addItem(colorArray[i]);
 			countryFourColorChoice.addItem(colorArray[i]);
 		}
-		
+
 		lockButton.addActionListener(new LockAction());
 	}
-	
+
 	protected void createLayout(int numberCountries) {
 		String titre = "Gestion Empires";
 
@@ -127,7 +126,7 @@ public class PlayerWindow extends JFrame{
 		setSize(800, 200);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		
+
 		countryOnePanel.setLayout(new BoxLayout(countryOnePanel, BoxLayout.LINE_AXIS));
 		countryOnePanel.add(countryOneNameLabel);
 		countryOnePanel.add(countryOneChoice);
@@ -144,7 +143,7 @@ public class PlayerWindow extends JFrame{
 			lineTwo.setLayout(new BoxLayout(lineTwo, BoxLayout.Y_AXIS));
 			lineTwo.add(countryOnePanel);
 			lineTwo.add(countryTwoPanel);
-			
+
 			countriesPanel.setLayout(new BorderLayout());
 			countriesPanel.add(lineTwo, BorderLayout.NORTH);
 			if (numberCountries >= 3) {
@@ -153,12 +152,12 @@ public class PlayerWindow extends JFrame{
 				countryThreePanel.add(countryThreeChoice);
 				countryThreePanel.add(countryThreeColorLabel);
 				countryThreePanel.add(countryThreeColorChoice);
-				
+
 				lineTwo.setLayout(new BoxLayout(lineTwo, BoxLayout.Y_AXIS));
 				lineTwo.add(countryOnePanel);
 				lineTwo.add(countryTwoPanel);
 				lineTwo.add(countryThreePanel);
-				
+
 				countriesPanel.setLayout(new BorderLayout());
 				countriesPanel.add(lineTwo, BorderLayout.NORTH);
 				countriesPanel.add(lineThree, BorderLayout.CENTER);
@@ -168,13 +167,13 @@ public class PlayerWindow extends JFrame{
 					countryFourPanel.add(countryFourChoice);
 					countryFourPanel.add(countryFourColorLabel);
 					countryFourPanel.add(countryFourColorChoice);
-					
+
 					lineTwo.setLayout(new BoxLayout(lineTwo, BoxLayout.Y_AXIS));
 					lineTwo.add(countryOnePanel);
 					lineTwo.add(countryTwoPanel);
 					lineTwo.add(countryThreePanel);
 					lineTwo.add(countryFourPanel);
-					
+
 					countriesPanel.setLayout(new BorderLayout());
 					countriesPanel.add(lineTwo, BorderLayout.NORTH);
 					countriesPanel.add(lineThree, BorderLayout.CENTER);
@@ -182,83 +181,143 @@ public class PlayerWindow extends JFrame{
 				}
 			}
 		}
-		
+
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(countriesPanel, BorderLayout.NORTH);
 		mainPanel.add(lockButton, BorderLayout.SOUTH);
 		this.getContentPane().add(mainPanel);
 		this.setVisible(true);
 	}
-	
-	class Selector implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			Object currentCountryOne = countryOneChoice.getSelectedItem();
-			Object currentCountryTwo = countryTwoChoice.getSelectedItem();
-			Object currentCountryThree = countryThreeChoice.getSelectedItem();
-			Object currentCountryFour = countryFourChoice.getSelectedItem();
-			Object currentColorOne = countryOneColorChoice.getSelectedItem();
-			Object currentColorTwo = countryTwoColorChoice.getSelectedItem();
-			Object currentColorThree = countryThreeColorChoice.getSelectedItem();
-			Object currentColorFour = countryFourColorChoice.getSelectedItem();
-			int indexCountryOne = countryOneChoice.getSelectedIndex();
-			int indexCountryTwo = countryTwoChoice.getSelectedIndex();
-			int indexCountryThree = countryThreeChoice.getSelectedIndex();
-			int indexCountryFour = countryFourChoice.getSelectedIndex();
-			int indexColorOne = countryOneColorChoice.getSelectedIndex();
-			int indexColorTwo = countryTwoColorChoice.getSelectedIndex();
-			int indexColorThree = countryThreeColorChoice.getSelectedIndex();
-			int indexColorFour = countryFourColorChoice.getSelectedIndex();
-			//a finir
-			System.out.println(numberCountries);
-			
-			if ((currentCountryTwo).equals(currentCountryOne) || ((currentCountryTwo).equals(currentCountryThree)) || ((currentCountryTwo).equals(currentCountryFour))) {
-				if (indexCountryTwo < countryTwoChoice.getItemCount() - 1) {
-					countryTwoChoice.setSelectedItem(countryTwoChoice.getItemAt(indexCountryTwo + 1));
-				} else {
-					countryTwoChoice.setSelectedItem(countryTwoChoice.getItemAt(0));
+
+	public void createEmpire() {
+		Empire empirePlayerOne = new Empire((String) countryOneChoice.getSelectedItem());
+		empirePlayerOne.colorChoice((String) countryOneColorChoice.getSelectedItem());
+		Empire empirePlayerTwo = new Empire((String) countryTwoChoice.getSelectedItem());
+		empirePlayerTwo.colorChoice((String) countryTwoColorChoice.getSelectedItem());
+		Empire empirePlayerThree = new Empire((String) countryThreeChoice.getSelectedItem());
+		empirePlayerThree.colorChoice((String) countryThreeColorChoice.getSelectedItem());
+		Empire empirePlayerFour = new Empire((String) countryFourChoice.getSelectedItem());
+		empirePlayerFour.colorChoice((String) countryFourColorChoice.getSelectedItem());
+		
+		try {
+			CSVReader empireFile = new CSVReader(new FileReader("empires.csv"));
+			String[] nextLine;
+			while ((nextLine = empireFile.readNext()) != null) {
+				if (nextLine[0].equals(empirePlayerOne.getName())) {
+					Country countryOnePlayerOne = countryReader(nextLine[1], empirePlayerOne);
+					Country countryTwoPlayerOne = countryReader(nextLine[2], empirePlayerOne);
+					countriesMap.put(0, countryOnePlayerOne);
+					countriesMap.put(1, countryTwoPlayerOne);
+				}
+				if (nextLine[0].equals(empirePlayerTwo.getName())) {
+					Country countryOnePlayerTwo = countryReader(nextLine[1], empirePlayerTwo);
+					Country countryTwoPlayerTwo = countryReader(nextLine[2], empirePlayerTwo);
+					countriesMap.put(2, countryOnePlayerTwo);
+					countriesMap.put(3, countryTwoPlayerTwo);
+				}
+				if (nextLine[0].equals(empirePlayerThree.getName())) {
+					Country countryOnePlayerThree = countryReader(nextLine[1], empirePlayerThree);
+					Country countryTwoPlayerThree = countryReader(nextLine[2], empirePlayerThree);
+					countriesMap.put(4, countryOnePlayerThree);
+					countriesMap.put(5, countryTwoPlayerThree);
+				}
+				if (nextLine[0].equals(empirePlayerFour.getName())) {
+					Country countryOnePlayerFour = countryReader(nextLine[1], empirePlayerFour);
+					Country countryTwoPlayerFour = countryReader(nextLine[2], empirePlayerFour);
+					countriesMap.put(6, countryOnePlayerFour);
+					countriesMap.put(7, countryTwoPlayerFour);
 				}
 			}
-			
-			if ((currentCountryThree).equals(currentCountryOne) || ((currentCountryThree).equals(currentCountryFour))) {
-				if (indexCountryThree < countryThreeChoice.getItemCount() - 1) {
-					countryThreeChoice.setSelectedItem(countryThreeChoice.getItemAt(indexCountryThree + 1));
-				} else {
-					countryThreeChoice.setSelectedItem(countryThreeChoice.getItemAt(0));
-				}
-			}
-			
-			if ((currentCountryFour).equals(currentCountryOne)) {
-				if (indexCountryFour < countryFourChoice.getItemCount() - 1) {
-					countryFourChoice.setSelectedItem(countryFourChoice.getItemAt(indexCountryFour + 1));
-				} else {
-					countryFourChoice.setSelectedItem(countryFourChoice.getItemAt(0));
-				}
-			}
-			
-			if ((currentColorOne).equals(currentColorTwo)) {
-				if (indexColorTwo < countryTwoColorChoice.getItemCount() - 1) {
-					countryTwoColorChoice.setSelectedItem(countryTwoColorChoice.getItemAt(indexColorTwo + 1));
-				} else {
-					countryTwoColorChoice.setSelectedItem(countryTwoColorChoice.getItemAt(0));
-				}
-			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		
+		
+	}
+
+	public Country countryReader(String countryName, Empire empire) {
+		Country country = null;
+		try {
+			CSVReader countryFile = new CSVReader(new FileReader("countries.csv"));
+			String[] nextLine;
+			while ((nextLine = countryFile.readNext()) != null) {
+				if (nextLine[0].equals(countryName)) {
+					int gold = Integer.parseInt(nextLine[1]);
+					int wood = Integer.parseInt(nextLine[2]);
+					String name = nextLine[0];
+					int producer = Integer.parseInt(nextLine[4]);
+					Country countryTMP = new Country(gold, wood, name, empire);
+					countryTMP.setProduce(producer);
+					country = countryTMP;
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return country;
 	}
 	
 	class LockAction implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					int cellWidth = 40;
-					try {
-						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					} catch (Exception e) {
-						e.printStackTrace();
+			int indexCountryOne = countryOneChoice.getSelectedIndex();
+			int indexCountryTwo = countryTwoChoice.getSelectedIndex();
+			int indexColorOne = countryOneColorChoice.getSelectedIndex();
+			int indexColorTwo = countryTwoColorChoice.getSelectedIndex();
+			int indexCountryThree = -1;
+			int indexColorThree = -1;
+			int indexCountryFour = -2;
+			int indexColorFour = -2;
+			
+			if (nombreDeJoueurs >= 3) {
+				indexCountryThree = countryThreeChoice.getSelectedIndex();
+				indexColorThree = countryThreeColorChoice.getSelectedIndex();
+			}
+			
+			if (nombreDeJoueurs == 4) {
+				indexCountryFour = countryFourChoice.getSelectedIndex();
+				indexColorFour = countryFourColorChoice.getSelectedIndex();
+			}
+
+			if ((((indexCountryOne == indexCountryTwo) || (indexCountryOne == indexCountryThree)
+					|| (indexCountryOne == indexCountryFour)) || (indexCountryOne == 0))
+					|| (((indexColorOne == indexColorTwo) || (indexColorOne == indexColorThree)
+							|| (indexColorOne == indexColorFour)) || (indexColorOne == 0))
+					|| (((indexCountryTwo == indexCountryThree) || (indexCountryTwo == indexCountryFour))
+							|| (indexCountryTwo == 0))
+					|| (((indexColorTwo == indexColorThree) || (indexColorTwo == indexColorFour))
+							|| (indexColorTwo == 0))
+					|| ((indexCountryThree == indexCountryFour) || (indexCountryThree == 0))
+					|| ((indexColorThree == indexColorFour) || (indexColorThree == 0)) || (indexCountryFour == 0)
+					|| (indexColorFour == 0)) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						new ErrorWindow("Veuillez sélectionner des empires et couleurs différents");
 					}
-					new MapWindow(cellWidth, ligne, colonne, nombreDeJoueurs);
-					dispose();
-				}
-			});
+				});
+			} else {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						int cellWidth = 40;
+						try {
+							UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						createEmpire();
+						new MapWindow(cellWidth, ligne, colonne, nombreDeJoueurs, countriesMap);
+						dispose();
+					}
+				});
+			}
 		}
 	}
 

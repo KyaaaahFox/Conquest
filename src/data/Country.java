@@ -21,15 +21,13 @@ public class Country {
 		this.name = name;
 		this.empire = empire;
 	}
-		
-	
+
 	@Override
 	public String toString() {
 		return "Country [gold=" + gold + ", wood=" + wood + ", name=" + name + ", caserns=" + Arrays.toString(caserns)
 				+ ", produce=" + produce + ", mine=" + mine + ", forest=" + forest + ", offense="
-				+ Arrays.toString(offense) + ", defense=" + Arrays.toString(defense) + "]";
+				+ Arrays.toString(offense) + ", defense=" + Arrays.toString(defense) + ", empire=" + empire + "]";
 	}
-
 
 	public int getGold() {
 		return gold;
@@ -111,5 +109,25 @@ public class Country {
 
 	public void setEmpire(Empire empire) {
 		this.empire = empire;
+	}
+	
+	public void addAtkSoldier(Soldier soldier){
+		offense[offense.length] = soldier;
+	}
+	
+	public void addDefSoldier(Soldier soldier){
+		defense[defense.length] = soldier;
+	}
+	
+	public void suppAtkArmy() {
+		for (int i = 0; i < offense.length; i++) {
+			offense[i] = null;
+		}
+	}
+	
+	public void suppDefArmy() {
+		for (int i = 0; i < defense.length; i++) {
+			defense[i] = null;
+		}
 	}
 }

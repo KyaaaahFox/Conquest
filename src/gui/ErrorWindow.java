@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,32 +10,40 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class ErrorWindow extends JPanel {
+public class ErrorWindow extends JFrame {
+	protected JPanel mainPanel = new JPanel();
+	
 	protected JLabel errorField = new JLabel();
 	protected JButton confirmButton = new JButton("OK");
 	
 	private String errorMsg;
-	protected JFrame thisFrame;
 	
-	public ErrorWindow(String errorMsg, JFrame thisFrame) {
+	public ErrorWindow(String errorMsg) {
 		this.errorMsg = errorMsg;
-		this.thisFrame = thisFrame;
 		displayMessage();
 	}
 	
 	public void displayMessage() {
-		this.setLayout(new GridLayout(2, 1));
+		String titre = "Accueil";
+
+		setTitle(titre);
+		setSize(400, 100);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
 		
 		errorField.setText(errorMsg);
 		confirmButton.addActionListener(new closeWindow());
 		
-		this.add(errorField);
-		this.add(confirmButton);
+		mainPanel.setLayout(new BorderLayout());
+		mainPanel.add(errorField, BorderLayout.CENTER);
+		mainPanel.add(confirmButton, BorderLayout.SOUTH);
+		this.getContentPane().add(mainPanel);
+		this.setVisible(true);
 	}
 	
 	class closeWindow implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			thisFrame.dispose();
+			dispose();
 		}
 	}
 }

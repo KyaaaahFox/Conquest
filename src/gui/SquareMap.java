@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
 
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
@@ -17,11 +18,19 @@ public class SquareMap extends JPanel{
 	private int cols;
 	private int rows;
 	private Dimension caseSize;
+	private Color[][] squareColors;
+	private Color currentColor;
 
 	public SquareMap(int rows, int cols, int squareSize) {
 		this.caseSize = new Dimension(squareSize, squareSize);
 		this.rows = rows;
 		this.cols = cols;
+		squareColors =  new Color[rows][cols];
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				this.squareColors[i][j] = Color.WHITE;
+			}
+		}
 		createGrid();
 		
 	}
@@ -62,14 +71,15 @@ public class SquareMap extends JPanel{
 				Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
 				currentCase.setBorder(border);
 				currentCase.setMaximumSize(caseSize);
-				currentCase.setBackground(Color.WHITE);
+				currentCase.setBackground(squareColors[row][column]);
 				add(currentCase);
 				squareGrid[row][column] = currentCase;
 			}
 		}
 	}
 	
-	public void createClickableGrid(){
+	public void createClickableGrid(Color color){
+		this.currentColor = color;
 		this.removeAll();
 		this.setLayout(new GridLayout(rows, cols));
 		squareGrid = new JLabel[rows][cols];
@@ -81,7 +91,7 @@ public class SquareMap extends JPanel{
 				Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
 				currentCase.setBorder(border);
 				currentCase.setMaximumSize(caseSize);
-				currentCase.setBackground(Color.WHITE);
+				currentCase.setBackground(squareColors[row][column]);
 				currentCase.addMouseListener(new ColorChanger());
 				add(currentCase);
 				squareGrid[row][column] = currentCase;
@@ -98,17 +108,12 @@ public class SquareMap extends JPanel{
 		public void mouseClicked(MouseEvent e) {
 			Square selectedCaseJLabel = (Square) e.getSource();
 			
-			
 			if (selectedCaseJLabel.getBackground().equals(Color.WHITE)) {
-				selectedCaseJLabel.setBackground(Color.RED);
+				squareColors[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentColor;
+				selectedCaseJLabel.setBackground(currentColor);
 				selectedCaseJLabel.setText("Casern");
-			}else if (selectedCaseJLabel.getBackground().equals(Color.RED)) {
-				selectedCaseJLabel.setBackground(Color.GREEN);
-				selectedCaseJLabel.setText("Wood");
-			}else if (selectedCaseJLabel.getBackground().equals(Color.GREEN)) {
-				selectedCaseJLabel.setBackground(Color.BLUE);
-				selectedCaseJLabel.setText("Gold");
-			}else if (selectedCaseJLabel.getBackground().equals(Color.BLUE)) {
+			}else{
+				squareColors[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = Color.WHITE;
 				selectedCaseJLabel.setBackground(Color.WHITE);
 				int num = 1 + selectedCaseJLabel.getPositionX() + selectedCaseJLabel.getPositionY();
 				selectedCaseJLabel.setText(Integer.toString(num));
