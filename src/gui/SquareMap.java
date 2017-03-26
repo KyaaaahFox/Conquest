@@ -5,30 +5,41 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashMap;
-
 import javax.swing.border.Border;
+
+import data.Country;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class SquareMap extends JPanel{
-	private JLabel[][] squareGrid;
+	
+	protected JLabel[][] squareGrid;
+	
 	private int cols;
 	private int rows;
+	
 	private Dimension caseSize;
+	
 	private Color[][] squareColors;
 	private Color currentColor;
+	
+	private String[][] squareNames;
+	
+	private Country currentCountry;
 
 	public SquareMap(int rows, int cols, int squareSize) {
 		this.caseSize = new Dimension(squareSize, squareSize);
 		this.rows = rows;
 		this.cols = cols;
 		squareColors =  new Color[rows][cols];
+		squareNames = new String[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				this.squareColors[i][j] = Color.WHITE;
+				this.squareNames[i][j] = Integer.toString(1 + i + j);
 			}
 		}
 		createGrid();
@@ -59,6 +70,33 @@ public class SquareMap extends JPanel{
 		this.caseSize = caseSize;
 	}
 
+	public Color getCurrentColor() {
+		return currentColor;
+	}
+
+	public void setCurrentColor(Color currentColor) {
+		this.currentColor = currentColor;
+	}
+
+	public Country getCurrentCountry() {
+		return currentCountry;
+	}
+
+	public void setCurrentCountry(Country currentCountry) {
+		this.currentCountry = currentCountry;
+	}
+
+	public void removeMap() {
+		squareColors =  new Color[rows][cols];
+		squareNames = new String[rows][cols];
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				this.squareColors[i][j] = Color.WHITE;
+				this.squareNames[i][j] = Integer.toString(1 + i + j);
+			}
+		}
+	}
+	
 	public void createGrid(){
 		this.removeAll();
 		this.setLayout(new GridLayout(rows, cols));
@@ -78,15 +116,15 @@ public class SquareMap extends JPanel{
 		}
 	}
 	
-	public void createClickableGrid(Color color){
-		this.currentColor = color;
+	public void createClickableGrid(Country country){
+		this.currentColor = country.getEmpire().getColor();
+		this.currentCountry = country;
 		this.removeAll();
 		this.setLayout(new GridLayout(rows, cols));
 		squareGrid = new JLabel[rows][cols];
 		for (int row = 0; row < squareGrid.length; row++) {
 			for (int column = 0; column < squareGrid[row].length; column++) {
-				int num = 1 + column + row;
-				Square currentCase = new Square(row, column, Integer.toString(num));
+				Square currentCase = new Square(row, column, squareNames[row][column]);
 				currentCase.setOpaque(true);
 				Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
 				currentCase.setBorder(border);
@@ -110,12 +148,14 @@ public class SquareMap extends JPanel{
 			
 			if (selectedCaseJLabel.getBackground().equals(Color.WHITE)) {
 				squareColors[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentColor;
+				squareNames[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentCountry.getEmpire().getName();
 				selectedCaseJLabel.setBackground(currentColor);
-				selectedCaseJLabel.setText("Casern");
+				selectedCaseJLabel.setText(currentCountry.getEmpire().getName());
 			}else{
 				squareColors[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = Color.WHITE;
 				selectedCaseJLabel.setBackground(Color.WHITE);
 				int num = 1 + selectedCaseJLabel.getPositionX() + selectedCaseJLabel.getPositionY();
+				squareNames[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = Integer.toString(num);
 				selectedCaseJLabel.setText(Integer.toString(num));
 			}
 		}

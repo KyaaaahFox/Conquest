@@ -1,12 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventListener;
 import java.util.HashMap;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,12 +16,16 @@ import data.Country;
 public class MapWindow extends JFrame{
 	protected JPanel mainPanel = new JPanel();
 	protected JPanel parametersPanel = new JPanel();
+	protected JPanel buttonsPanel = new JPanel();
+	
+	protected JButton clearMapButton = new JButton("Clear the map");
+	protected JButton lockMapButton = new JButton("Confirm Map");
 	
 	protected SquareMap mapPanel;
 	
 	protected JComboBox<String> currentPlayer = new JComboBox<String>();
 	
-	private Color currentColor;
+	private Country currentCountry;
 	
 	private int cellWidth;	
 	private int nombreDeJoueurs;
@@ -58,7 +61,9 @@ public class MapWindow extends JFrame{
 			break;
 		}
 		
-		currentColor = countriesMap.get(0).getEmpire().getColor();
+		currentCountry = countriesMap.get(0);
+		
+		clearMapButton.addActionListener(new ClearMap());
 	}
 	
 	protected void createLayout() {
@@ -68,14 +73,22 @@ public class MapWindow extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		
+		buttonsPanel.removeAll();
+		parametersPanel.removeAll();
 		mapPanel.removeAll();
+		mainPanel.removeAll();
 
 		currentPlayer.addActionListener(new Selector());
 		
+		buttonsPanel.setLayout(new BorderLayout());
+		buttonsPanel.add(clearMapButton, BorderLayout.WEST);
+		buttonsPanel.add(lockMapButton, BorderLayout.EAST);
+		
 		parametersPanel.setLayout(new BorderLayout());
 		parametersPanel.add(currentPlayer, BorderLayout.NORTH);
+		parametersPanel.add(buttonsPanel, BorderLayout.SOUTH);
 		
-		mapPanel.createClickableGrid(currentColor);
+		mapPanel.createClickableGrid(currentCountry);
 		
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(mapPanel, BorderLayout.CENTER);
@@ -95,7 +108,14 @@ public class MapWindow extends JFrame{
 	class Selector implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			int selectedCountry = currentPlayer.getSelectedIndex() * 2;
-			currentColor = countriesMap.get(selectedCountry).getEmpire().getColor();
+			currentCountry = countriesMap.get(selectedCountry);
+			mapPanel.setCurrentColor(currentCountry.getEmpire().getColor());
+		}
+	}
+	
+	class ClearMap implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			mapPanel.removeMap();
 			createLayout();
 		}
 	}

@@ -26,28 +26,23 @@ public class War {
   	}
   	
 	//Set Counties and armies
-	public void battle() {
+	public String battle() {
+		int powerBalance = (int) Math.sqrt(Math.pow((atkPower - defPower), 2));
 		if (atkPower < defPower) {
-			defCountry.getEmpire().setCountries(defCountry.getEmpire().getCountries()+1);
-	 		for (int i = 0; i < atkCountry.getOffense().length; i++) {
-				atkCountry.suppAtkArmy();
-				defCountry.
-			}
-			beingAttacked[nomberOfCountriesBeingAttacked] = NULL; 
-			nomberOfCountriesBeingAttacked=nomberOfCountriesBeingAttacked-1;
-			if (nomberOfCountriesBeingAttacked==0){
-				System.out.println("Defending Player LOST");
-			}
-		}
-		else if (atkPower>defPower) {
-			atkCountry.setOffense() = NULL;
-			System.out.println("Attacking Army is DESTROYED!");
-		}
-		else{
-			atkCountry = NULL;
-			defCountry = NULL;
- 			System.out.println("Defending Army is DESTROYED!");
- 			System.out.println("Attacking Army is DESTROYED!");
+	 		atkCountry.suppAtkArmy();
+			defCountry.defArmyLosses(powerBalance);
+			return "Atacking country lost";
+		}else if (atkPower > defPower) {
+			defCountry.suppDefArmy();
+			atkCountry.atkArmyLosses(powerBalance);
+			atkCountry.getEmpire().setCountries(atkCountry.getEmpire().getCountries()+1);
+			defCountry.getEmpire().setCountries(defCountry.getEmpire().getCountries()-1);
+			defCountry.setEmpire(atkCountry.getEmpire());
+			return "Attacking country won";
+		}else{
+	 		atkCountry.suppAtkArmy();
+			defCountry.suppDefArmy();
+			return "Draw game, both armies destroyed";
   		}
   	}
   }

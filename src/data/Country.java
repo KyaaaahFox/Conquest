@@ -1,6 +1,7 @@
 package data;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Country {
 	private int gold;
@@ -128,6 +129,20 @@ public class Country {
 	public void suppDefArmy() {
 		for (int i = 0; i < defense.length; i++) {
 			defense[i] = null;
+		}
+	}
+	
+	public void defArmyLosses(int powerBalance) {
+		int loss = defense.length - powerBalance;
+		for (int i = defense.length; i > loss; i--) {
+			defense[i] = null;
+		}
+	}
+	
+	public void atkArmyLosses(int powerBalance) {
+		int loss = offense.length - powerBalance;
+		for (int i = offense.length; i > loss; i--) {
+			offense[i] = null;
 		}
 	}
 }
