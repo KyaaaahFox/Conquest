@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -70,6 +71,7 @@ public class MapWindow extends JFrame{
 	protected void createInitLayout() {
 		String titre = "Gestion Carte";
 		setTitle(titre);
+		setMinimumSize(new Dimension(800, 800));
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -101,6 +103,7 @@ public class MapWindow extends JFrame{
 	protected void createGameLayout() {
 		String titre = "Gestion Carte";
 		setTitle(titre);
+		setMinimumSize(new Dimension(800, 800));
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
