@@ -68,7 +68,7 @@ public class Empire {
 			setColor(Color.YELLOW);
 		break;
 		default:
-			setColor(null);
+			setColor(Color.WHITE);
 		break;
 		}
 	}

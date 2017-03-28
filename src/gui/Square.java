@@ -2,11 +2,14 @@ package gui;
 
 import javax.swing.JLabel;
 
+import data.Country;
+
 @SuppressWarnings("serial")
 public class Square extends JLabel{
 	private int positionX;
 	private int positionY;
 	private String text;
+	private Country country;
 	
 	public Square(int positionX, int positionY, String text) {
 		super();
@@ -37,5 +40,13 @@ public class Square extends JLabel{
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
 	}
 }

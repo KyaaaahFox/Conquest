@@ -36,10 +36,10 @@ public class MapWindow extends JFrame{
 	public MapWindow(int cellWidth, int ligne, int colonne, int nombreDeJoueurs, HashMap<Integer, Country> countriesMap) {
 		this.cellWidth = cellWidth;
 		this.nombreDeJoueurs = nombreDeJoueurs;
-		this.mapPanel = new SquareMap(ligne, colonne, 10);
+		this.mapPanel = new SquareMap(ligne, colonne, countriesMap);
 		this.countriesMap.putAll(countriesMap);
 		initLists();
-		createLayout();
+		createInitLayout();
 	}
 
 	protected void initLists(){
@@ -64,9 +64,10 @@ public class MapWindow extends JFrame{
 		currentCountry = countriesMap.get(0);
 		
 		clearMapButton.addActionListener(new ClearMap());
+		lockMapButton.addActionListener(new LockMap());
 	}
 	
-	protected void createLayout() {
+	protected void createInitLayout() {
 		String titre = "Gestion Carte";
 		setTitle(titre);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -96,6 +97,36 @@ public class MapWindow extends JFrame{
 		this.getContentPane().add(mainPanel);
 		this.setVisible(true);
 	}
+	
+	protected void createGameLayout() {
+		String titre = "Gestion Carte";
+		setTitle(titre);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		
+		buttonsPanel.removeAll();
+		parametersPanel.removeAll();
+		mapPanel.removeAll();
+		mainPanel.removeAll();
+
+		currentPlayer.addActionListener(new Selector());
+		
+		buttonsPanel.setLayout(new BorderLayout());
+		buttonsPanel.add(clearMapButton, BorderLayout.WEST);
+		buttonsPanel.add(lockMapButton, BorderLayout.EAST);
+		
+		parametersPanel.setLayout(new BorderLayout());
+		
+		
+		mapPanel.createGameGrid();
+		
+		mainPanel.setLayout(new BorderLayout());
+		mainPanel.add(mapPanel, BorderLayout.CENTER);
+		mainPanel.add(parametersPanel, BorderLayout.EAST);
+		this.getContentPane().add(mainPanel);
+		this.setVisible(true);
+	}
 
 	public int getCellWidth() {
 		return cellWidth;
@@ -109,6 +140,7 @@ public class MapWindow extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			int selectedCountry = currentPlayer.getSelectedIndex() * 2;
 			currentCountry = countriesMap.get(selectedCountry);
+			mapPanel.setCurrentCountry(currentCountry);
 			mapPanel.setCurrentColor(currentCountry.getEmpire().getColor());
 		}
 	}
@@ -116,7 +148,13 @@ public class MapWindow extends JFrame{
 	class ClearMap implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			mapPanel.removeMap();
-			createLayout();
+			createInitLayout();
+		}
+	}
+	
+	class LockMap implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			createGameLayout();
 		}
 	}
 }

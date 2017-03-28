@@ -79,8 +79,11 @@ public class PlayerWindow extends JFrame {
 			CSVReader empires = new CSVReader(new FileReader("empires.csv"));
 			String[] line;
 			while ((line = empires.readNext()) != null) {
-				empireList.add(line[0]);
+				if (!line[0].equals("Swiss Empire")) {
+					empireList.add(line[0]);
+				}
 			}
+			empires.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -103,6 +106,7 @@ public class PlayerWindow extends JFrame {
 			while ((line = colors.readNext()) != null) {
 				colorList.add(line[0]);
 			}
+			colors.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -198,6 +202,8 @@ public class PlayerWindow extends JFrame {
 		empirePlayerThree.colorChoice((String) countryThreeColorChoice.getSelectedItem());
 		Empire empirePlayerFour = new Empire((String) countryFourChoice.getSelectedItem());
 		empirePlayerFour.colorChoice((String) countryFourColorChoice.getSelectedItem());
+		Empire empireNeutre = new Empire("Swiss Empire");
+		empireNeutre.colorChoice("White");
 		
 		try {
 			CSVReader empireFile = new CSVReader(new FileReader("empires.csv"));
@@ -227,7 +233,14 @@ public class PlayerWindow extends JFrame {
 					countriesMap.put(6, countryOnePlayerFour);
 					countriesMap.put(7, countryTwoPlayerFour);
 				}
+				if (nextLine[0].equals(empireNeutre.getName())) {
+					Country countryOneSuisse = countryReader(nextLine[1], empireNeutre);
+					Country countryTwoSuisse = countryReader(nextLine[2], empireNeutre);
+					countriesMap.put(8, countryOneSuisse);
+					countriesMap.put(9, countryTwoSuisse);
+				}
 			}
+			empireFile.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -253,6 +266,7 @@ public class PlayerWindow extends JFrame {
 					country = countryTMP;
 				}
 			}
+			countryFile.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
