@@ -76,7 +76,7 @@ public class PlayerWindow extends JFrame {
 		countryTwoChoice.setMaximumSize(new Dimension(300, 200));
 		ArrayList<String> empireList = new ArrayList<String>();
 		try {
-			CSVReader empires = new CSVReader(new FileReader("empires.csv"));
+			CSVReader empires = new CSVReader(new FileReader("src/ressources/empires.csv"));
 			String[] line;
 			while ((line = empires.readNext()) != null) {
 				if (!line[0].equals("Swiss Empire")) {
@@ -101,7 +101,7 @@ public class PlayerWindow extends JFrame {
 		countryTwoColorChoice.setMaximumSize(new Dimension(300, 200));
 		ArrayList<String> colorList = new ArrayList<String>();
 		try {
-			CSVReader colors = new CSVReader(new FileReader("colors.csv"));
+			CSVReader colors = new CSVReader(new FileReader("src/ressources/colors.csv"));
 			String[] line;
 			while ((line = colors.readNext()) != null) {
 				colorList.add(line[0]);
@@ -206,7 +206,7 @@ public class PlayerWindow extends JFrame {
 		empireNeutre.colorChoice("White");
 		
 		try {
-			CSVReader empireFile = new CSVReader(new FileReader("empires.csv"));
+			CSVReader empireFile = new CSVReader(new FileReader("src/ressources/empires.csv"));
 			String[] nextLine;
 			while ((nextLine = empireFile.readNext()) != null) {
 				if (nextLine[0].equals(empirePlayerOne.getName())) {
@@ -253,7 +253,7 @@ public class PlayerWindow extends JFrame {
 	public Country countryReader(String countryName, Empire empire) {
 		Country country = null;
 		try {
-			CSVReader countryFile = new CSVReader(new FileReader("countries.csv"));
+			CSVReader countryFile = new CSVReader(new FileReader("src/ressources/countries.csv"));
 			String[] nextLine;
 			while ((nextLine = countryFile.readNext()) != null) {
 				if (nextLine[0].equals(countryName)) {
@@ -314,7 +314,7 @@ public class PlayerWindow extends JFrame {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						new ErrorWindow("Veuillez sÃ©lectionner des empires et couleurs diffÃ©rents");
+						new ErrorWindow("Veuillez sélectionner des empires et couleurs différents");
 					}
 				});
 			} else {

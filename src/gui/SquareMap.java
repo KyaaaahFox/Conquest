@@ -8,10 +8,10 @@ import java.awt.event.MouseListener;
 import java.util.HashMap;
 
 import javax.swing.border.Border;
-
 import data.Country;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -150,14 +150,42 @@ public class SquareMap extends JPanel{
 		this.removeAll();
 		this.setLayout(new GridLayout(rows, cols));
 		squareGrid = new JLabel[rows][cols];
+		
 		for (int row = 0; row < squareGrid.length; row++) {
 			for (int column = 0; column < squareGrid[row].length; column++) {
 				Square currentCase = new Square(row, column, squareNames[row][column]);
 				currentCase.setOpaque(true);
-				Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
-				currentCase.setBorder(border);
+				if (squareColors[row][column] != Color.WHITE) {
+					int top;
+					int left;
+					int bot;
+					int right;
+					if ((row > 0) && (squareCountry[row - 1][column] == squareCountry[row][column])) {
+						top = 0;
+					} else {
+						top = 5;
+					} 
+					if ((column > 0) && (squareCountry[row][column - 1] == squareCountry[row][column])) {
+						left = 0; 
+					} else {
+						left = 5;
+					} 
+					if ((column < cols - 1) && (squareCountry[row][column + 1] == squareCountry[row][column])) {
+						right = 0;
+					} else {
+						right = 5;
+					} 
+					if ((row < rows - 1) && (squareCountry[row + 1][column] == squareCountry[row][column])) {
+							bot = 0;
+					} else {
+						bot = 5;
+					} 
+					currentCase.setBorder(BorderFactory.createMatteBorder(top, left, bot, right, squareColors[row][column]));
+				}
 				currentCase.setMaximumSize(caseSize);
-				currentCase.setBackground(squareColors[row][column]);
+				currentCase.setIcon(new ImageIcon("src/ressources/ground-zero.jpg"));
+				currentCase.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+				currentCase.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 				currentCase.setCountry(squareCountry[row][column]);
 				currentCase.addMouseListener(new GameMaker());
 				add(currentCase);
@@ -177,10 +205,10 @@ public class SquareMap extends JPanel{
 			
 			if (selectedCaseJLabel.getBackground().equals(Color.WHITE)) {
 				squareColors[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentColor;
-				squareNames[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentCountry.getEmpire().getName();
+				squareNames[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentCountry.getName();
 				squareCountry[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentCountry;
 				selectedCaseJLabel.setBackground(currentColor);
-				selectedCaseJLabel.setText(currentCountry.getEmpire().getName());
+				selectedCaseJLabel.setText(currentCountry.getName());
 			}else{
 				squareColors[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = countriesMap.get(8).getEmpire().getColor();
 				selectedCaseJLabel.setBackground(Color.WHITE);
@@ -223,12 +251,18 @@ public class SquareMap extends JPanel{
 		}
 
 		public void mouseClicked(MouseEvent e) {
-			Square prout = (Square) e.getSource();
-			String abs = Integer.toString(prout.getPositionX());
-			String ord = Integer.toString(prout.getPositionY());
-			String name = prout.getCountry().getName();
+			Square selectedCase = (Square) e.getSource();
+			String abs = Integer.toString(selectedCase.getPositionX());
+			String ord = Integer.toString(selectedCase.getPositionY());
+			String name = selectedCase.getCountry().getName();
 			System.out.println("(" + abs + " ; " + ord + "): " + name);
-			
+			if (selectedCase.getCountry().getEmpire().getName()==currentCountry.getEmpire().getName()) {
+				System.out.println("Allie");
+			}else if (selectedCase.getCountry().getEmpire().getName()=="Swiss Empire") {
+				System.out.println("Meh");
+			}else{
+				System.out.println("Foe");
+			}
 		}
 
 		@Override
