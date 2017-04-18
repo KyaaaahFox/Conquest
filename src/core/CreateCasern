@@ -1,0 +1,17 @@
+package core;
+
+import java.util.Scanner;
+
+import data.Country;
+
+public class CreateCasern {
+
+public void addCasern(Country country) {
+	if (country.getGold() > 500 000) {
+
+	}else{
+		System.out.println("You do not have enough GOLD");
+	}
+}
+
+}
