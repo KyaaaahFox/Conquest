@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -9,37 +10,54 @@ import java.util.HashMap;
 
 import javax.swing.border.Border;
 import data.Country;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class SquareMap extends JPanel{
-	
+public class SquareMap extends JPanel {
+
 	protected JLabel[][] squareGrid;
-	
+
 	private int cols;
 	private int rows;
 	
 	private Dimension caseSize;
-	
+
 	private Color[][] squareColors;
 	private Color currentColor;
-	
+
 	private String[][] squareNames;
-	
+
 	private Country currentCountry;
 	private Country[][] squareCountry;
 	HashMap<Integer, Country> countriesMap = new HashMap<>();
+	
+	protected JPanel mapPanel = new JPanel();
+	protected JPanel casernPanel = new JPanel();
+	protected JPanel prodPanel = new JPanel();
+	protected JPanel soldierPanel = new JPanel();
+	protected JPanel gamePanel = new JPanel();
+	
+	protected JButton makeCasernButton = new JButton("Create Casern");
+	protected JButton upCasernButton = new JButton("Up Casern Level");
+	protected JButton makeSoldierButton = new JButton("Create Soldier");
+	protected JButton makeMineButton = new JButton("Create Gold Production");
+	protected JButton makeForestButton = new JButton("Create Wood Production");
+	protected JButton moveSoldierButton = new JButton("Move Soldier");
+	
+	protected JButton attackCountryButton = new JButton("ATTACK");
+	
+	protected JButton buyCaseButton = new JButton("Buy new Case");
 
 	public SquareMap(int rows, int cols, HashMap<Integer, Country> countriesMap) {
 		this.caseSize = new Dimension(10, 10);
 		this.rows = rows;
 		this.cols = cols;
 		this.countriesMap.putAll(countriesMap);
-		squareColors =  new Color[rows][cols];
+		squareColors = new Color[rows][cols];
 		squareNames = new String[rows][cols];
 		squareCountry = new Country[rows][cols];
 		for (int i = 0; i < rows; i++) {
@@ -50,9 +68,9 @@ public class SquareMap extends JPanel{
 			}
 		}
 		createGrid();
-		
+
 	}
-	
+
 	public int getCols() {
 		return cols;
 	}
@@ -68,7 +86,7 @@ public class SquareMap extends JPanel{
 	public void setRows(int rows) {
 		this.rows = rows;
 	}
-	
+
 	public Dimension getCaseSize() {
 		return caseSize;
 	}
@@ -94,7 +112,7 @@ public class SquareMap extends JPanel{
 	}
 
 	public void removeMap() {
-		squareColors =  new Color[rows][cols];
+		squareColors = new Color[rows][cols];
 		squareNames = new String[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
@@ -103,8 +121,8 @@ public class SquareMap extends JPanel{
 			}
 		}
 	}
-	
-	public void createGrid(){
+
+	public void createGrid() {
 		this.removeAll();
 		this.setLayout(new GridLayout(rows, cols));
 		squareGrid = new JLabel[rows][cols];
@@ -123,8 +141,8 @@ public class SquareMap extends JPanel{
 			}
 		}
 	}
-	
-	public void createClickableGrid(Country country){
+
+	public void createClickableGrid(Country country) {
 		this.currentColor = country.getEmpire().getColor();
 		this.currentCountry = country;
 		this.removeAll();
@@ -145,12 +163,13 @@ public class SquareMap extends JPanel{
 			}
 		}
 	}
-	
+
 	public void createGameGrid() {
 		this.removeAll();
-		this.setLayout(new GridLayout(rows, cols));
+		this.setLayout(new BorderLayout());
+		mapPanel.setLayout(new GridLayout(rows, cols));
 		squareGrid = new JLabel[rows][cols];
-		
+
 		for (int row = 0; row < squareGrid.length; row++) {
 			for (int column = 0; column < squareGrid[row].length; column++) {
 				Square currentCase = new Square(row, column, squareNames[row][column]);
@@ -164,23 +183,24 @@ public class SquareMap extends JPanel{
 						top = 0;
 					} else {
 						top = 5;
-					} 
+					}
 					if ((column > 0) && (squareCountry[row][column - 1] == squareCountry[row][column])) {
-						left = 0; 
+						left = 0;
 					} else {
 						left = 5;
-					} 
+					}
 					if ((column < cols - 1) && (squareCountry[row][column + 1] == squareCountry[row][column])) {
 						right = 0;
 					} else {
 						right = 5;
-					} 
+					}
 					if ((row < rows - 1) && (squareCountry[row + 1][column] == squareCountry[row][column])) {
-							bot = 0;
+						bot = 0;
 					} else {
 						bot = 5;
-					} 
-					currentCase.setBorder(BorderFactory.createMatteBorder(top, left, bot, right, squareColors[row][column]));
+					}
+					currentCase.setBorder(
+							BorderFactory.createMatteBorder(top, left, bot, right, squareColors[row][column]));
 				}
 				currentCase.setMaximumSize(caseSize);
 				currentCase.setIcon(new ImageIcon("src/ressources/ground-zero.jpg"));
@@ -188,33 +208,75 @@ public class SquareMap extends JPanel{
 				currentCase.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 				currentCase.setCountry(squareCountry[row][column]);
 				currentCase.addMouseListener(new GameMaker());
-				add(currentCase);
+				mapPanel.add(currentCase);
 				squareGrid[row][column] = currentCase;
 			}
 		}
+		gamePanel.setLayout(new BorderLayout());
+		createGamePanel(currentCountry);
+		this.add(mapPanel, BorderLayout.CENTER);
+		this.add(gamePanel, BorderLayout.EAST);
 	}
 	
-	class ColorChanger implements MouseListener{
+	public void initGameButtons() {
 		
+	}
+	
+	public void createGamePanel(Country selectedCountry) {
+		gamePanel.removeAll();
+		if (selectedCountry.getEmpire().getName() == currentCountry.getEmpire().getName()) {
+			System.out.println("Ally");
+			casernPanel.setLayout(new BorderLayout());
+			casernPanel.add(makeCasernButton, BorderLayout.NORTH);
+			casernPanel.add(upCasernButton, BorderLayout.CENTER);
+			
+			prodPanel.setLayout(new BorderLayout());
+			prodPanel.add(makeMineButton, BorderLayout.NORTH);
+			prodPanel.add(makeForestButton, BorderLayout.CENTER);
+			
+			soldierPanel.setLayout(new BorderLayout());
+			soldierPanel.add(makeSoldierButton, BorderLayout.NORTH);
+			soldierPanel.add(moveSoldierButton, BorderLayout.CENTER);
+			
+			gamePanel.add(casernPanel, BorderLayout.NORTH);
+			gamePanel.add(prodPanel, BorderLayout.CENTER);
+			gamePanel.add(soldierPanel, BorderLayout.SOUTH);
+		} else if (selectedCountry.getEmpire().getName() == "Swiss Empire") {
+			System.out.println("Neutral");
+			gamePanel.add(buyCaseButton, BorderLayout.NORTH);
+		} else {
+			System.out.println("Foe");
+			gamePanel.add(attackCountryButton, BorderLayout.NORTH);
+		}
+		gamePanel.revalidate();
+		gamePanel.repaint();
+	}
+
+	class ColorChanger implements MouseListener {
+
 		public ColorChanger() {
 			// TODO Auto-generated constructor stub
 		}
-		
+
 		public void mouseClicked(MouseEvent e) {
 			Square selectedCaseJLabel = (Square) e.getSource();
-			
+
 			if (selectedCaseJLabel.getBackground().equals(Color.WHITE)) {
 				squareColors[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentColor;
-				squareNames[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentCountry.getName();
+				squareNames[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentCountry
+						.getName();
 				squareCountry[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = currentCountry;
 				selectedCaseJLabel.setBackground(currentColor);
 				selectedCaseJLabel.setText(currentCountry.getName());
-			}else{
-				squareColors[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = countriesMap.get(8).getEmpire().getColor();
+			} else {
+				squareColors[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = countriesMap.get(8)
+						.getEmpire().getColor();
 				selectedCaseJLabel.setBackground(Color.WHITE);
 				int num = 1 + selectedCaseJLabel.getPositionX() + selectedCaseJLabel.getPositionY();
-				squareNames[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = Integer.toString(num);
-				squareCountry[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = countriesMap.get(8);
+				squareNames[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = Integer
+						.toString(num);
+				squareCountry[selectedCaseJLabel.getPositionX()][selectedCaseJLabel.getPositionY()] = countriesMap
+						.get(8);
 				selectedCaseJLabel.setText(Integer.toString(num));
 			}
 		}
@@ -222,30 +284,30 @@ public class SquareMap extends JPanel{
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	}
 
-	class GameMaker implements MouseListener{
-		
+	class GameMaker implements MouseListener {
+
 		public GameMaker() {
 			// TODO Auto-generated constructor stub
 		}
@@ -256,38 +318,32 @@ public class SquareMap extends JPanel{
 			String ord = Integer.toString(selectedCase.getPositionY());
 			String name = selectedCase.getCountry().getName();
 			System.out.println("(" + abs + " ; " + ord + "): " + name);
-			if (selectedCase.getCountry().getEmpire().getName()==currentCountry.getEmpire().getName()) {
-				System.out.println("Allie");
-			}else if (selectedCase.getCountry().getEmpire().getName()=="Swiss Empire") {
-				System.out.println("Meh");
-			}else{
-				System.out.println("Foe");
-			}
+			createGamePanel(selectedCase.getCountry());
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 	}
 }

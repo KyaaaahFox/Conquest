@@ -145,7 +145,6 @@ public class MapWindow extends JFrame {
 		parametersPanel.setLayout(new BorderLayout());
 
 		mapPanel.createGameGrid();
-		mapPanel.setSize(400, 400);
 
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(mapPanel, BorderLayout.CENTER);
