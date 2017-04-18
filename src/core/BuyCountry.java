@@ -6,7 +6,7 @@ import data.Country;
 
 public class BuyCountry {
 
-public void addCountryNeutural(Empire empire, Country country, Country neutral) {
+public void addCountryNeutural(Country country, Country neutral) {
 	costCountryNeutral=50000000000000000000000000000*country.getNumberCases();
 	if (country.getGold() > costCountryNeutral) {
 		country.setGold(country.getGold() - costCountryNeutral;
